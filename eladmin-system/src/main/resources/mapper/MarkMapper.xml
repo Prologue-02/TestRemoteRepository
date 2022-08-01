@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.mark.service.mapper.MarkMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.id, a.cid, a.grade, a.mid
+  </sql>
+  -->
+  <select id="findStudentNameById" parameterType="java.lang.Integer" resultType="String">
+    select name as sname from student where id = #{id}
+  </select>
+  <select id="findCourseNameById" parameterType="java.lang.Integer" resultType="String">
+    select cname from course where cid = #{id}
+  </select>
+  <select id="findCourseYearById" parameterType="java.lang.Integer" resultType="String">
+    select year from course where cid = #{id}
+  </select>
+  <select id="findCourseTearmById" parameterType="java.lang.Integer" resultType="int">
+    select tearm from course where cid = #{id}
+  </select>
+  <select id="findTeacherNameById" parameterType="java.lang.Integer" resultType="String">
+    select tname from teacher where tid = (select tid from course where cid = #{id})
+  </select>
+  <select id="queryMarkBySid" parameterType="java.lang.String" resultType="me.zhengjie.modules.mark.service.dto.MarkDto">
+    select cname,tname,year,tearm,grade from (select cname,tid,year,tearm,grade from
+    (select cid,grade from mark where id = #{id}) tmp1 join course c on tmp1.cid = c.cid) tmp2
+    join teacher t on tmp2.tid=t.tid
+  </select>
+
+  <select id="getAllUnMarkedStudent" parameterType="java.lang.String" resultType="me.zhengjie.modules.mark.service.dto.MarkDto">
+    select id,name as sname,course.cid,cname from
+    (select id,name,cid from
+    (select sid,cid from course_student_info where cid in
+        (select cid from course where tid = #{id})
+    and sid not in
+        (select id from mark where cid in
+        (select cid from course where tid = #{id})))tmp join student on tmp.sid = id )tmp2 join course on tmp2.cid = course.cid
+  </select>
+
+  <select id="getlUnMarkedStudentByCid" resultType="me.zhengjie.modules.mark.service.dto.MarkDto">
+    select id,name as sname,course.cid,cname from
+      (select id,name,cid from(select sid,cid from course_student_info where cid in
+        (select cid from course where tid = #{tid} and cid = #{cid})
+        and sid not in
+        (select id from mark where cid in
+        (select cid from course where tid = #{tid} and cid = #{cid})))tmp join student on tmp.sid = id )tmp2 join course on tmp2.cid = course.cid
+  </select>
+
+  <insert id="insertStudentMark">
+    insert into mark(id,cid,grade) values (#{sid},#{cid},#{mark})
+  </insert>
+</mapper>

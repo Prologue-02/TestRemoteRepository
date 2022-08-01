@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.project.service.mapper.ProjectMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.pid, a.title, a.content, a.createtime, a.author
+  </sql>
+  -->
+  <select id="findTeacherNameById" resultType="java.lang.String">
+    select tname from teacher where tid = #{id}
+  </select>
+  <select id="getProjectInfoById" resultType="me.zhengjie.modules.project.service.dto.ProjectDto">
+    select * from project where author = #{author} order by createtime,status
+  </select>
+  <select id="getProjectStatusInfoById" resultType="me.zhengjie.modules.project.service.dto.ProjectDto">
+    select distinct status from project where author = #{author}
+  </select>
+
+  <select id="getProjectInfoByStatus" resultType="me.zhengjie.modules.project.service.dto.ProjectDto">
+    select * from project where author = #{author} and status = #{status} order by createtime
+  </select>
+  <insert id="insertProjectInfo">
+    insert into project (title,content,createtime,author,status) values (#{title},#{content},#{createtime},#{author},#{status})
+  </insert>
+</mapper>

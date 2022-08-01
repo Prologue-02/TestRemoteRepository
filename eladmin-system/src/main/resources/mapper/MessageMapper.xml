@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.message.service.mapper.MessageMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.mid, a.title, a.content, a.createtime, a.status, a.author
+  </sql>
+  -->
+    <select id="queryMessage" resultType="me.zhengjie.modules.message.domain.Message">
+        select title,content,status,createtime from message where status=1  ORDER BY  createtime  DESC
+    </select>
+</mapper>

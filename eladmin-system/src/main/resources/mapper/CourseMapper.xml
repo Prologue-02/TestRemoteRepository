@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.course.service.mapper.CourseMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.cid, a.cname, a.classtime, a.classweek, a.tid, a.tearm, a.year, a.status
+  </sql>
+  -->
+  <select id="findTeacherNameById" parameterType="java.lang.Integer" resultType="String">
+    select tname from teacher where tid = #{id}
+  </select>
+
+  <select id="queryCourseInfoByStudent" parameterType="java.lang.String" resultType="me.zhengjie.modules.course.service.dto.CourseDto">
+    select cid,cname,tname,classtime,classweek,year,tearm from
+      (select * from course where cid in
+      (select cid from course_student_info where sid = #{id})) tmp join teacher on tmp.tid = teacher.tid
+  </select>
+
+  <select id="selectCourse" parameterType="java.lang.String" resultType="me.zhengjie.modules.course.service.dto.CourseDto">
+    select cid,cname,tname,classtime,classweek,`year`,tearm,tmp.`status` from
+    (select * from course where cid not in(select cid from course_student_info where sid = #{id})) tmp join teacher on tmp.tid = teacher.tid
+  </select>
+
+  <insert id="InsertStudentCourse">
+    insert into course_student_info (sid,cid) values (#{sid},#{cid})
+  </insert>
+
+  <select id="queryCourseInfoByTeacher" parameterType="java.lang.String" resultType="me.zhengjie.modules.course.service.dto.CourseDto">
+    select cid,cname,classtime,classweek,year,tearm from course where tid = #{id}
+  </select>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.teacher.service.mapper.TeacherMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.tid, a.username, a.tname, a.age, a.sex, a.address, a.phone, a.email, a.status
+  </sql>
+  -->
+  <select id="getTeacherInfo" resultType="me.zhengjie.modules.teacher.service.dto.TeacherDto">
+    select * from teacher
+  </select>
+</mapper>

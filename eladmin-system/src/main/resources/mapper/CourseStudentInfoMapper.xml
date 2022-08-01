@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhengjie.modules.studentCourseInfo.service.mapper.CourseStudentInfoMapper">
+
+  <!-- 通用查询结果列 -->
+  <!--
+  <sql id="Base_Column_List">
+      a.rid, a.sid, a.cid, a.judge
+  </sql>
+  -->
+  <select id="getJudgeByStudent" resultType="me.zhengjie.modules.studentCourseInfo.service.dto.CourseStudentInfoDto">
+    select * from course_student_info where  sid = #{sid} and cid = #{cid}
+  </select>
+  <update id="insertJudgeByStudent">
+    update course_student_info set judge=#{judge} where sid = #{sid} and cid = #{cid}
+  </update>
+</mapper>
